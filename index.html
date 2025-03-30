@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIT Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .search-overlay {
+            backdrop-filter: blur(15px);
+        }
+        .search-box {
+            height: 168px;
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .search-box.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<header class="bg-white shadow-md fixed top-0 w-full z-50">
+    <nav class="flex items-center justify-between px-4 md:px-40 h-[110px] relative">   
+        <!-- Left Section: Hamburger, Account, Search -->
+        <div class="flex items-center gap-5">
+            <button id="menuToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-9 h-9">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <button id="accountBtn" class="hidden md:block">
+                <img alt="" loading="lazy" src="/svgs/account_icon.svg" class="nav_menu-icon">
+            </button>
+            <button id="searchToggle" class="hidden md:block">
+                <img alt="" loading="lazy" src="svgs/search_icon.svg" class="nav_menu-icon">
+            </button>
+        </div>
+
+        <!-- Center: Logo -->
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+            <img src="/images/logo_small.png" alt="Institute Logo" class="h-20">
+        </div>
+
+        <!-- Right Section: Apply Now -->
+        <div>
+            <a href="#" class="bg-yellow-300 text-black px-6 py-3 text-xl font-medium">
+                <span class="inline md:hidden">APPLY</span>  
+                <span class="hidden md:inline">APPLY NOW</span>  
+            </a>
+        </div>
+    </nav>
+</header>
+
+<!-- Search Box Overlay -->
+<div id="searchOverlay" class="fixed left-0 w-full hidden flex flex-col items-center justify-start search-overlay z-40 top-[110px]">
+    <div id="searchBox" class="bg-white bg-opacity-90 w-full h-[118px] flex flex-col items-center justify-center search-box">
+        <div class="w-1/3 relative border-b-2 border-gray-400">
+            <input id="searchInput" type="text" placeholder="Search Here..." class="w-full p-2 text-xl border-none outline-none bg-transparent">
+            <img src="svgs/search_icon.svg" alt="Search" class="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer" id="searchButton">
+            <button id="closeSearch" class="absolute top-[-20px] right-[-30px]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600 hover:text-gray-800">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchToggle = document.getElementById("searchToggle");
+    const searchOverlay = document.getElementById("searchOverlay");
+    const searchBox = document.getElementById("searchBox");
+    const searchInput = document.getElementById("searchInput");
+    const closeSearch = document.getElementById("closeSearch");
+    const searchButton = document.getElementById("searchButton");
+
+    // Function to toggle the search box
+    function toggleSearchBox() {
+        if (searchOverlay.classList.contains("hidden")) {
+            searchOverlay.classList.remove("hidden");
+            setTimeout(() => {
+                searchBox.classList.add("active");
+                searchInput.focus();
+            }, 10);
+        } else {
+            closeSearchBox();
+        }
+    }
+
+    // Function to close the search box
+    function closeSearchBox() {
+        searchBox.classList.remove("active");
+        setTimeout(() => searchOverlay.classList.add("hidden"), 300);
+    }
+
+    searchToggle.addEventListener("click", toggleSearchBox);
+    closeSearch.addEventListener("click", closeSearchBox);
+
+    searchOverlay.addEventListener("click", (event) => {
+        if (!searchBox.contains(event.target)) closeSearchBox();
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeSearchBox();
+        if (event.key === "Enter") alert("Searching: " + searchInput.value);
+    });
+
+    searchButton.addEventListener("click", () => {
+        alert("Searching: " + searchInput.value);
+    });
+
+</script>
+
+</body>
+</html>
