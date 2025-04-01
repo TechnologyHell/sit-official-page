@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar with Full-Screen Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .search-overlay {
+            backdrop-filter: blur(15px);
+        }
+        .search-box {
+            height: 168px;
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .search-box.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        #menu-toggle {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #menu-toggle.open {
+            transform: rotate(90deg) scale(0.8);
+            opacity: 0.7;
+        }
+        .expandable-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #007bff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .expandable-box:hover {
+            background-color: #f0f8ff;
+        }
+        .submenu {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+        }
+        .submenu.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .plus-icon {
+            transition: transform 0.3s ease;
+        }
+        .plus-icon.open {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="relative">
+
+<header class="bg-white shadow-md fixed top-0 w-full z-50">
+    <nav class="flex items-center justify-between px-4 md:px-40 h-[110px] relative">
+        <div class="flex items-center gap-5">
+            <button id="menu-toggle" class="z-50 relative text-xl focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-9 h-9">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <button id="accountBtn" class="hidden md:block">
+                <img alt="" loading="lazy" src="svgs/user_icon.svg" class="nav_menu-icon">
+            </button>
+            <button id="searchToggle" class="hidden md:block">
+                <img alt="" loading="lazy" src="svgs/search_icon.svg" class="nav_menu-icon">
+            </button>
+        </div>
+
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+            <img src="images/logo_small.png" alt="Institute Logo" class="h-20">
+        </div>
+
+        <div>
+            <a href="#" class="bg-yellow-300 text-black px-6 py-3 text-xl font-medium">
+                <span class="inline md:hidden">APPLY</span>
+                <span class="hidden md:inline">APPLY NOW</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<!-- Mobile Menu -->
+<div id="menu-overlay" class="fixed top-[110px] left-0 w-full h-[calc(100vh-110px)] bg-white bg-opacity-90 hidden z-40 p-6">
+    <ul id="mobile-menu" class="space-y-3 text-xl text-blue-900">
+        <!-- Updated Column 1 items with expandable boxes -->
+        <li>
+            <div class="expandable-box" data-section="about">
+                <span>About Us</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="about-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <li>
+            <div class="expandable-box" data-section="admissions">
+                <span>Admissions</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="admissions-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <li>
+            <div class="expandable-box" data-section="academics">
+                <span>Academics</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="academics-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <li>
+            <div class="expandable-box" data-section="studentlife">
+                <span>Student Life</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="studentlife-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <li>
+            <div class="expandable-box" data-section="placements">
+                <span>Placements & Careers</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="placements-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <li>
+            <div class="expandable-box" data-section="news">
+                <span>News & Events</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="news-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+
+        <!-- Quick Links (Expandable) -->
+        <li>
+            <div class="expandable-box" data-section="quicklinks">
+                <span>Quick Links</span>
+                <svg class="plus-icon w-6 h-6 transform transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12M12 6v12" />
+                </svg>
+            </div>
+            <ul id="quicklinks-submenu" class="submenu pl-6 text-gray-700"></ul>
+        </li>
+    </ul>
+</div>
+
+<script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuOverlay = document.getElementById("menu-overlay");
+    let isMenuOpen = false;
+
+    const sectionData = {
+        about: ["Overview", "Vision & Mission", "Institute Leadership", "Accreditations & Rankings", "Campus Facilities", "Research & Innovation", "Governance & Policies", "Contact & Location"],
+        admissions: ["Why Choose SIT?", "Courses Offered", "Admission Process", "Eligibility Criteria", "Fees & Scholarships", "Important Dates", "International Admissions", "Download Prospectus", "FAQs"],
+        academics: ["Departments & Programs", "Faculty Directory", "Academic Calendar", "Curriculum & Syllabus", "Examinations & Results", "Student Support Services", "Research & Publications", "E-Learning Portal"],
+        studentlife: ["Clubs & Societies", "Events & Fests", "Sports & Athletics", "Hostel & Accommodation", "Cafeteria & Food Services", "Student Council", "Anti-Ragging Cell", "Alumni Network"],
+        placements: ["Placement Overview", "Top Recruiters", "Placement Statistics", "Internships", "Skill Development Programs", "Resume & Interview Prep", "Career Guidance Cell", "Entrepreneurship & Startups"],
+        news: ["Latest News", "Announcements", "Upcoming Events", "Media Coverage", "Press Releases", "Student Achievements", "Awards & Recognitions"],
+        quicklinks: ["Online Learning", "Library", "Campus Map", "Alumni", "Student Portal", "Faculty Portal"],
+    };
+
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        menuOverlay.classList.toggle("hidden");
+        menuToggle.classList.toggle("open");
+    }
+
+    menuToggle.addEventListener("click", toggleMenu);
+
+    document.querySelectorAll(".expandable-box").forEach((box) => {
+        box.addEventListener("click", () => {
+            const section = box.dataset.section;
+            const submenu = document.getElementById(`${section}-submenu`);
+            const plusIcon = box.querySelector(".plus-icon");
+
+            if (submenu.innerHTML === "") {
+                submenu.innerHTML = sectionData[section]
+                    .map((subItem) => `<li class='py-1 cursor-pointer hover:text-red-700'>${subItem}</li>`)
+                    .join("");
+            }
+
+            submenu.classList.toggle("active");
+            plusIcon.classList.toggle("open");
+        });
+    });
+</script>
+
+</body>
+</html>
