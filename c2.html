@@ -81,6 +81,22 @@
                 display: none;
             }
         }
+        .desktop-menu-overlay {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+        .desktop-menu-overlay.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .desktop-menu-overlay .animate-text {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+        .desktop-menu-overlay.active .animate-text {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="relative">
@@ -200,8 +216,8 @@
 </div>
 
 <!-- Desktop Menu -->
-<div id="desktop-menu-overlay" class="fixed top-[110px] left-0 w-full h-[calc(100vh-60px)] bg-white bg-opacity-90 hidden z-40 px-4 md:px-40">
-    <div class="p-6 grid grid-cols-3 gap-4 relative h-full">
+<div id="desktop-menu-overlay" class="fixed top-[110px] left-0 w-full h-[calc(100vh-60px)] bg-white bg-opacity-90 hidden z-40 px-4 md:px-40 desktop-menu-overlay">
+    <div class="p-6 grid grid-cols-3 gap-4 relative h-full animate-text">
         
         <!-- Full-Height Vertical Lines -->
         <div class="absolute top-0 left-1/3 h-full w-px bg-gray-300"></div>  <!-- Line between Col 1 & 2 -->
@@ -317,11 +333,17 @@
         if (window.innerWidth >= 768) {
             desktopMenuOverlay.classList.toggle("hidden");
             if (isMenuOpen) {
-                desktopMenuOverlay.style.transform = "translateY(0)";
-                desktopMenuOverlay.style.opacity = "1";
+                desktopMenuOverlay.classList.add("active");
+                setTimeout(() => {
+                    document.querySelectorAll(".desktop-menu-overlay .animate-text").forEach(el => {
+                        el.classList.add("active");
+                    });
+                }, 500); // Adjust the delay if needed
             } else {
-                desktopMenuOverlay.style.transform = "translateY(-100%)";
-                desktopMenuOverlay.style.opacity = "0";
+                desktopMenuOverlay.classList.remove("active");
+                document.querySelectorAll(".desktop-menu-overlay .animate-text").forEach(el => {
+                    el.classList.remove("active");
+                });
             }
         } else {
             menuOverlay.classList.toggle("active");
@@ -444,5 +466,3 @@
         alert("Searching: " + searchInput.value);
     });
 </script>
-</body>
-</html>
